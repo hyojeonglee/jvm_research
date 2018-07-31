@@ -1,0 +1,40 @@
+사용 순서
+
+1. parser.py
+parser.py <pstree log> <btrace file> <output file>
+(ex)
+Input
+- pstree.log.02
+- blktrace.sdc11.sda.case5.0725
+Output
+- blkoutput.0725
+
+2. analyzer.py
+analyzer.py <parsed result> <output file>
+(ex)
+Input
+- blkoutput.0725
+Output
+- new.analysis.0730
+
+3. finalizer01.py
+finalizer01.py <input file> <output file>
+(ex)
+Input
+- new.analysis.0730
+Output
+- all.analysis.0730
+
+4. finalizer02.py
+finalizer02.py <input file> <output file>
+(ex)
+Input
+- all.analysis.0730
+Output
+- 진행 중 
+
+5. pre_gnuplot.py
+pre_gnuplot.py <input file>
+
+6. make_gnuplot.sh
+./make_gnuplot.sh <RD file> <WR file> <SW file>
