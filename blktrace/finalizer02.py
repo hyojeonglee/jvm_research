@@ -16,11 +16,11 @@ cnt = 0
 with open(ifile) as f:
     for line in f:
         tmp = line.split()
-        if not(int(tmp[0]) in st_addr):
-            if (cnt % 100 == 0):
-                print (str(cnt) + ' Append start addr!')
-            st_addr.append(int(tmp[0]))
-            cnt += 1
+        # different from node 11's
+        if (cnt % 100 == 0):
+            print (str(cnt) + ' Append start addr!')
+        st_addr.append(int(tmp[0]))
+        cnt += 1
 
 print ('>>> Finish append!')
 print ('>>> Start sort!')
@@ -29,7 +29,6 @@ st_addr.sort()
 
 print ('>>> Finish sort!')
 
-ifile.close()
 
 print ('>>> Start create mem dict!')
 mem_dict = defaultdict(list)
@@ -57,7 +56,7 @@ out = open(ofile, 'w')
 print ('>>> Start write output file!')
 for k in mem_dict.keys():
     e_list = mem_dict.get(k)
-    out.write('# ' + k + ' : ' + len(tmp_list) + '\n')
+    out.write('# ' + str(k) + ' : ' + str(len(e_list)) + '\n')
     for e in e_list:
         out.write(e + '\n')
 
