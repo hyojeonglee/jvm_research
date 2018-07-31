@@ -13,6 +13,6 @@ SW=$3
 gnuplot -persist <<-EOFMarker
 	set terminal svg
 	set output "result.svg"
-	plot $1 axis x1y1, $2 axis x1y2, $3 axis x1y3
+	plot '$1' axis x1y1, '$2' axis x1y2, '$3' axis x2y1
 EOFMarker
 

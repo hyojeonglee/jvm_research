@@ -10,9 +10,9 @@ out_RD = open('./out_RD', 'a')
 out_WR = open('./out_WR', 'a')
 out_SW = open('./out_SW', 'a')
 
-out_RD.write('#X Y')
-out_WR.write('#X Y')
-out_SW.write('#X Y')
+out_RD.write('#X Y\n')
+out_WR.write('#X Y\n')
+out_SW.write('#X Y\n')
 
 st_addr_pre = '#'
 st_addr = 0
@@ -25,12 +25,12 @@ with open(ifile) as f:
             continue
         tmp = line.split()
         if (len(tmp) == 5):
-            out_SW.write(st_addr + ' ' + tmp[4])
+            out_SW.write(st_addr + ' ' + tmp[4] + '\n')
         elif (len(tmp) == 3):
-            if 'R' in tmp[0]:
-                out_RD.write(st_addr + ' ' + tmp[2])
-            else 'W' in tmp[0]:
-                out_WR.write(st_addr + ' ' + tmp[2])
+            if ('R' in tmp[0]):
+                out_RD.write(st_addr + ' ' + tmp[2] + '\n')
+            elif ('W' in tmp[0]):
+                out_WR.write(st_addr + ' ' + tmp[2] + '\n')
             
 out_RD.close()
 out_WR.close()
