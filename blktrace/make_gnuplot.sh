@@ -13,6 +13,7 @@ SW=$3
 gnuplot -persist <<-EOFMarker
 	set terminal png
 	set output "result.png"
+	set key outside
 	plot '$1' axis x1y1, '$2' axis x1y2, '$3' axis x2y1, '$4' axis x2y2
 EOFMarker
 
