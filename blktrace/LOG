@@ -35,6 +35,14 @@ Output
 
 5. pre_gnuplot.py
 pre_gnuplot.py <input file>
+(ex)
+Input
+- test_fin02.0731
+Output
+- out_RD
+- out_WR
+- out_SW_R
+- out_SW_W
 
 6. make_gnuplot.sh
-./make_gnuplot.sh <RD file> <WR file> <SW file>
+./make_gnuplot.sh <RD file> <WR file> <SW_R file> <SW_W file>
