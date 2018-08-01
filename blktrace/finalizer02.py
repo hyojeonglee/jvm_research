@@ -16,7 +16,7 @@ cnt = 0
 with open(ifile) as f:
     for line in f:
         tmp = line.split()
-        # different from node 11's
+        # Not concern duplication
         if (cnt % 100 == 0):
             print (str(cnt) + ' Append start addr!')
         st_addr.append(int(tmp[0]))
@@ -42,13 +42,14 @@ with open(ifile) as f:
     for line in f:
         tmp = line.split()
         key = int(tmp[0])
-        event_str = ' '
+        event_str = ''
         if (tmp[5] == '[java]'):
-            event_str = tmp[4] + ' + ' + tmp[6]
+            event_str = tmp[2] + ' ' + tmp[4] + ' ' + tmp[6]
         else:
-            event_str = tmp[4] + ' + ' + tmp[5] + ' + ' + tmp[6]
+            event_str = tmp[2] + ' ' + tmp[4] + ' ' + tmp[5] + ' ' + tmp[6]
             
         mem_dict[key].append(event_str)
+
 print ('>>> Finish fill mem_dict with event strings!')
 
 out = open(ofile, 'w')
@@ -58,8 +59,9 @@ for k in mem_dict.keys():
     e_list = mem_dict.get(k)
     out.write('# ' + str(k) + ' : ' + str(len(e_list)) + '\n')
     for e in e_list:
+        if (len(e) == 0):
+            continue
         out.write(e + '\n')
 
 print ('>>> ALL FINISH!')
-
 

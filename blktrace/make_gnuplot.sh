@@ -6,10 +6,6 @@ then
 	exit 1
 fi
 
-RD=$1
-WR=$2
-SW=$3
-
 gnuplot -persist <<-EOFMarker
 	set terminal png
 	set output "result.png"

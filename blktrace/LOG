@@ -23,15 +23,15 @@ finalizer01.py <input file> <output file>
 Input
 - new.analysis.0730
 Output
-- all.analysis.0730
+- fin01.0801
 
-4. finalizer02.py
+(pre_gnuplot_v2 사용 시 생략) 4. finalizer02.py
 finalizer02.py <input file> <output file>
 (ex)
 Input
-- all.analysis.0730
+- fin01.0801
 Output
-- 진행 중 
+- fin02.0801 
 
 5. pre_gnuplot.py
 pre_gnuplot.py <input file>

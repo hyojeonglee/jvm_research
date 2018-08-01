@@ -28,7 +28,8 @@ with open(pfile) as f:
             if (read in tmp[6]) or (write in tmp[6]) or (tmp[10] == swap) or (tmp[10] == java):
                 if (tmp[10] == '<-'):
                     continue
-                # if (tmp[5] == to_dev):
-                result = tmp[7] + ' + ' + tmp[9] + ' : ' + tmp[6] + ' ' + tmp[10] + ' ' + tmp[3] + '\n'
-                out.write(result)
+                # Only parse 'D'
+                if (tmp[5] == to_dev):
+                    result = tmp[7] + ' + ' + tmp[9] + ' : ' + tmp[6] + ' ' + tmp[10] + ' ' + tmp[3] + '\n'
+                    out.write(result)
 
