@@ -1,5 +1,5 @@
 
-public class Case_5 {
+public class Case_4 {
 	private int _1GB = 1024 * 1024 * 1024;
 	public static void main(String [] args) throws InterruptedException {
 		boolean case1 = false;
@@ -82,35 +82,38 @@ public class Case_5 {
 
 		}
 		if(case3 == true) {
-			System.out.println("> Start assign 10 nulls");
-			for(int i = 30; i< 40; i++) {
-				obj[i].array = null;
-				obj[i] = null;
-			}
-			// Thread.sleep(1000 * 10);
 			
-			System.out.println("> Start access 0 to 29 object");
+			System.out.println("> Start access 10 to 39 object");
 			for(int loop = 0; loop < 10; loop++) {
 				System.out.println("# loop " + loop);
 				start = System.currentTimeMillis();
-				for(int i = 0; i < 30; i++ )
+				for(int i = 10; i < 40; i++ )
 					obj[i].reset((byte)0xff);
 				end = System.currentTimeMillis();
 				System.out.println("... Time: " + (end - start));
 				System.out.println("----------");
 			}
-			System.out.println("> Fin access 0 to 29 object 10 times");
-			System.out.println("> Start alloc new 10 object");
+			System.out.println("> Fin access 10 to 39 object 10 times");
+			
+			
+			System.out.println("> Start assign 10 nulls");
+			for(int i = 30; i< 40; i++) {
+				obj[i].array = null;
+				obj[i] = null;
+			}
+			
+			
+			
+			System.out.println("> Start alloc new 5 object");
 			start = System.currentTimeMillis();
-			for(int i = 40; i < 50; i++) {
+			for(int i = 40; i < 45; i++) {
 				obj[i] = new Object(i);
 				System.out.println(i);
 			}
 			//	System.gc();
 			end = System.currentTimeMillis();
-			System.out.println("> Fin alloc new 10 object");
-			System.out.println("> Time for gc case 5 is " + (end - start) + "ms");
-
+			System.out.println("> Fin alloc new 5 object");
+			System.out.println("> Time for gc case 4  is " + (end - start) + "ms");
 		}
 		// default case
 		//if (i <= 19)
