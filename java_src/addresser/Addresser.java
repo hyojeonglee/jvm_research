@@ -40,12 +40,22 @@ public class Addresser
 	
 	public static void main(String... args) throws Exception
 	{
-//		Object mine = "hi there".toCharArray();
-		byte[] mine = new byte[1024 * 1024 *1024];
-		byte[] yours = new byte[1024 * 1024 *1024];
-		long address1 = addressOf(mine);
-		long address2 = addressOf(yours);
-		System.out.println("address1:" + Long.toHexString(address1));
+		System.out.println("start");
+	//	byte[] mine = new byte[1024 * 1024 *1024];
+	//	byte[] yours = new byte[1024 * 1024 *1024];
+		SampleObject[] obj = new SampleObject[90];
+		for(int i = 0; i < 70; i++) {
+			obj[i] = new SampleObject(i);
+			System.out.println(i);
+		}
+		Thread.sleep(1000 * 10);
+	//long address1 = addressOf(mine);
+	 // long address2 = addressOf(yours);
+	//	System.out.println("address1:" + Long.toHexString(address1));
+	//	System.out.println("address2:" + Long.toHexString(address2));
+		long address = addressOf(obj);
+	    long address2 = addressOf(obj[0].array);
+		System.out.println("address:" + Long.toHexString(address));
 		System.out.println("address2:" + Long.toHexString(address2));
 	}
 
