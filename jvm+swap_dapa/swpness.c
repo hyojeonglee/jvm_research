@@ -53,12 +53,10 @@ int IS_SWP(u8 kpflags)
 	return 0;
 }
 
-// TODO
+// TODO: useless.
 struct VA *get_vas(void)
 {
 	struct VA *head;
-
-	// TODO
 
 	return head;
 }
@@ -68,16 +66,19 @@ struct VA *get_vas(void)
 #define HUGE_PAGE_SIZE (1 << 21)
 
 // TODO: how to get pid of jvm summary process?
-int cal_swpness(int pid)
+// First, we will use pidof or jps for test.
+int cal_swpness(int pid, u8 beg, u8 end)
 {
 	struct VA *vas_head, *curr;
 	char pmap_path[25];	/* enough for 10-digit pid */
 	char kpflg_path[] = "/proc/kpageflags";
 	int pmapf, kpflgf;
+	int tot_cnt = 0;
 	int swp_cnt = 0;
 
-	// TODO: how to get vaddrs of java object in region?
-	vas_head = get_vas();
+	// TODO: useless.
+	// how to get vaddrs of java object in region?
+	// vas_head = get_vas();
 	// TODO: error handling
 
 	sprintf(pmap_path, "/proc/%d/pagemap", pid);
@@ -113,9 +114,11 @@ int cal_swpness(int pid)
 					vaddr += HUGE_PAGE_SIZE -
 						BASE_PAGE_SIZE;
 				}
-				// TODO: swp obj counter += 1
+				// Increase swp obj counter
 				if (IS_SWP(kpflags) == 1)
 					swp_cnt++;
+				// Increase total counter
+				tot_cnt++;
 			} else {
 				err(2, "%s: read kpageflag", __func__);
 			}
@@ -124,6 +127,9 @@ int cal_swpness(int pid)
 	close(pmapf);
 	close(kpflgf);
 
-	// TODO: Summerize swapness (swapped / total)
+	// Summarize swapness (swapped pages / total pages in LRU list)
+	printf("Swapped pages / Total pages: %d\n", int(swp_cnt / tot_cnt));
+
+	return 0;
 }
 
