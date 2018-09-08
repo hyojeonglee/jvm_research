@@ -1,0 +1,29 @@
+0907 FRI LOG
+1. gcc -Wall -c -fPIC swpness.c
+2. cp swpness.o ~/jdk_1.8_source/openjdk-8u40-src-b25-10_feb_2015/openjdk/build/linux-x86_64-normal-server-slowdebug/hotspot/linux_amd64_compiler2/debug/
+3. bash configure (just for first time)
+4. make
+
+0905 WED LOG
+1. Rebuild openjdk (FAIL)
+	- install some dependency (with error msg)
+	- bash configure --with-debug-level=slowdebug
+	- make all [CONF=...-release or slowdebug]
+	- -Werror=literal-suffix > -Wno-error=literal-suffix > -Wno-literal-suffix
+2. Run TestGcSwap (FAIL)
+3. Get openjdk source again! (ing)
+	- gcc version 7 > 5 !!!
+
+
+Old version (for working set and hotness)
+(1) pfnofmap.c
+(2) pageidle.c
+(3) pghotness.c or wspgstat.c
+
+New version (for swapness)
+(1) vaddr이 주어진다고 가정 (Input: object 당 vaddr 범위, 가변적)
+(2) pfnofmap_v2 (pfnofmap.c) 의 로직 활용해서
+    kpageflag에서 swap 정보 얻기 (어떤 페이지가 swap되었는지는 X)
+(3) swap된 영역 / 전체 vaddr해서 swap된 것의 비율 얻기 (Output)
+
+
