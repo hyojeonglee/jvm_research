@@ -46,12 +46,14 @@ public class TestGcSwap {
 			}
 		}	
 		if(case2 == true) {
-
+/*
+ * for JVM cr_print test
 			for(int loop = 0; loop < 10; loop++) {
 				System.out.println("loop " + loop);
 				for(int i = 0; i < 30; i++ )
 					obj[i].reset((byte)0xff);
 			}
+*/
 			for(int i = 0; i< 10; i++)
 				obj[i] = null;
 

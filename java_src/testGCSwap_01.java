@@ -6,7 +6,7 @@ public class testGCSwap_01 {
 		byte arr[][];
 
 		arr = new byte[100][];
-		for (int i = 0 ; i < 50 ; i++) {
+		for (int i = 0 ; i < 40 ; i++) {
 			arr[i] = new byte[_1GB];
 
 			System.out.println(i);

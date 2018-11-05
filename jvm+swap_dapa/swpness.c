@@ -6,22 +6,6 @@
 
 typedef unsigned long long u8;
 
-struct VA {
-	struct VA *next;
-	u8 start;
-	u8 end;
-};
-
-void add_va(struct VA *target, u8 start, u8 end)
-{
-	struct VA *new = malloc(sizeof(struct VA));
-
-	new->next = target->next;
-	new->start = start;
-	new->end = end;
-	target->next = new;
-}
-
 /*
  * ref: https://www.kernel.org/doc/Documentation/vm/pagemap.txt
  *
@@ -53,21 +37,13 @@ int IS_SWP(u8 kpflags)
 	return 0;
 }
 
-// TODO: useless.
-struct VA *get_vas(void)
-{
-	struct VA *head;
-
-	return head;
-}
-
 #define BASE_PAGE_SHIFT 12
 #define BASE_PAGE_SIZE (1 << 12)
 #define HUGE_PAGE_SIZE (1 << 21)
 
-// TODO: how to get pid of jvm summary process?
-// First, we will use pidof or jps for test.
-int cal_swpness(int pid, u8 beg, u8 end)
+// Issue 1. How to get pid of jvm summary process?
+// >>> First, we will use pidof or jps for test.
+int cal_swpness(int pid, char *raw_beg, size_t raw_size)
 {
 	struct VA *vas_head, *curr;
 	char pmap_path[25];	/* enough for 10-digit pid */
@@ -76,52 +52,49 @@ int cal_swpness(int pid, u8 beg, u8 end)
 	int tot_cnt = 0;
 	int swp_cnt = 0;
 
-	// TODO: useless.
-	// how to get vaddrs of java object in region?
-	// vas_head = get_vas();
-	// TODO: error handling
-
 	sprintf(pmap_path, "/proc/%d/pagemap", pid);
 	pmapf = open(pmap_path, O_RDONLY);
 	kpflgf = open(kpflg_path, O_RDONLY);
 
-	for (curr = vas_head->next; curr != NULL; curr = curr->next) {
-		u8 start_va = curr->start;
-		u8 end_va = curr->end;
-		u8 vaddr;
+	u8 vaddr;
+	printf("[module] raw_beg= %s\n", raw_beg);
+	printf("[module] raw_size= %d\n", raw_size);
+	u8 beg = 0;
+	u8 size = 0;
+	u8 start_va = beg;
+	u8 reg_size = size / 512;
+	u8 end_va = start_va + reg_size;
+#if 0
+	for (vaddr = start_va; vaddr < end_va; vaddr += BASE_PAGE_SIZE) {
+		u8 ent, pfn = 0;
+		u8 kpflags;
 
-		for (vaddr = start_va; vaddr < end_va;
-				vaddr += BASE_PAGE_SIZE) {
-			u8 ent, pfn = 0;
-			u8 kpflags;
+		u8 offset = vaddr >> (BASE_PAGE_SHIFT - 3);
 
-			u8 offset = vaddr >> (BASE_PAGE_SHIFT - 3);
-
-			lseek(pmapf, offset, SEEK_SET);
-			if (read(pmapf, &ent, 8) == 8) {
-				pfn = PAGEMAP_PFN(ent);
-				if (pfn == 0)
-					continue;
-			} else {
-				// TODO: error handling
+		lseek(pmapf, offset, SEEK_SET);
+		if (read(pmapf, &ent, 8) == 8) {
+			pfn = PAGEMAP_PFN(ent);
+			if (pfn == 0)
+				continue;
+		} else {
+			// TODO: error handling
+		}
+		
+		lseek(kpgflgf, pfn * 8, SEEK_SET);
+		if (read(kpflgf, &kpflags, 8) == 8) {
+			if (IN_LRU(kpflags) == 0)
+				continue;
+			if (IS_HUGE(kpflags) == 1) {
+				vaddr += HUGE_PAGE_SIZE -
+					BASE_PAGE_SIZE;
 			}
-
-			lseek(kpgflgf, pfn * 8, SEEK_SET);
-			if (read(kpflgf, &kpflags, 8) == 8) {
-				if (IN_LRU(kpflags) == 0)
-					continue;
-				if (IS_HUGE(kpflags) == 1) {
-					vaddr += HUGE_PAGE_SIZE -
-						BASE_PAGE_SIZE;
-				}
-				// Increase swp obj counter
-				if (IS_SWP(kpflags) == 1)
-					swp_cnt++;
-				// Increase total counter
-				tot_cnt++;
-			} else {
-				err(2, "%s: read kpageflag", __func__);
-			}
+			// Increase swp obj counter
+			if (IS_SWP(kpflags) == 1)
+				swp_cnt++;
+			// Increase total counter
+			tot_cnt++;
+		} else {
+			err(2, "%s: read kpageflag", __func__);
 		}
 	}
 	close(pmapf);
@@ -129,7 +102,7 @@ int cal_swpness(int pid, u8 beg, u8 end)
 
 	// Summarize swapness (swapped pages / total pages in LRU list)
 	printf("Swapped pages / Total pages: %d\n", int(swp_cnt / tot_cnt));
-
+#endif
 	return 0;
 }
 
