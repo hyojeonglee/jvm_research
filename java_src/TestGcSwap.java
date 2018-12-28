@@ -1,8 +1,8 @@
 public class TestGcSwap {
 	private int _1GB = 1024 * 1024 * 1024;
 	public static void main(String [] args) {
-		boolean case1 = false;
 		boolean case0 = false;
+		boolean case1 = false;
 		boolean case2 = true;
 		boolean case3 = false;
 
